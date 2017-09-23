@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="Scripts/jquery-2.2.0.min.js"></script>
+    <script src="Scripts/jquery_put_delete.js"></script>
+</head>
+<body>
+    <form id="form">
+        Id: <input type="text" name="Id" />
+        Name: <input type="text" name="name" />
+        Age: <input type="text" name="age" />
+        <input type="button" id="btnCreate" value="Create Person" />
+        <input type="button" id="btnRetrieve" value="Get Person" />
+        <input type="button" id="btnUpdate" value="Update Person" />
+        <input type="button" id="btnDelete" value="Delete Person" />
+        <input type="button" id="btnRetrieveAll" value="Get People" />
+    </form>
+    <script>
+        function DisplayResult(result)
+        {
+            if (result != null) {                    
+                alert(result.Id + ' ' + result.Name + ' ' + result.Age);
+            }
+            else {
+                alert('record not found');
+            }
+        }
+
+        var url = "http://localhost:59253/api/Default";
+        $("#btnCreate").click(function () {
+            $.post(url, $("form").serialize(), function (result) { alert(result.Id + ' ' + result.Name + ' ' + result.Age);});
+        });
+        $("#btnRetrieve").click(function () {            
+            $.get(url, $("form").serialize(), function (result) {             
+               DisplayResult(result);
+            });           
+        });
+        $("#btnUpdate").click(function () {
+            $.put(url, $("form").serialize(), function (result) {
+                DisplayResult(result);
+            });
+        });
+        $("#btnDelete").click(function () {
+            $.delete(url, $("form").serialize(), function (result) {
+                DisplayResult(result);
+            });
+        });
+        $("#btnRetrieveAll").click(function () {
+            $.get(url, function (result) {
+                if (result != null) {
+                for (var i = 0; i < result.length; i++) {
+                    alert(result[i].Id + ' ' + result[i].Name + ' ' + result[i].Age);
+                }
+                }
+                else {
+                    alert('record not found');
+                }
+            })
+        });     
+    </script>
+</body>
+</html>
